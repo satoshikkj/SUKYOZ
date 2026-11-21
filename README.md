@@ -41,6 +41,25 @@ O SUKYOZ combina três perspectivas:
 5. A pessoa mantém sua autonomia: a leitura organiza possibilidades, não decide por ela.
 6. Interpretações devem poder ser revistas diante de novas evidências.
 
+## Documentação das famílias
+
+- [Existência (EX)](docs/familia-existencia-aprofundada.md)
+- [Emoção (EM)](docs/familias/emocao.md)
+- [Vontade (VO)](docs/familias/vontade.md)
+- [Conexão (CO)](docs/familias/conexao.md)
+- [Expressão (XP)](docs/familias/expressao.md)
+- [Percepção (PE)](docs/familias/percepcao.md)
+- [Transcendência (TR)](docs/familias/transcendencia.md)
+
+## Qualidade e testes
+
+Os testes de regressão ficam em `tests/sukyoz.test.mjs` e são executados pelo GitHub Actions em `.github/workflows/quality.yml`. Para executar localmente com Node.js 22:
+
+```bash
+node --check script.js
+node --test tests/*.test.mjs
+```
+
 ## Estado do projeto
 
 **Edição digital 3.1 — catálogo de 49 cartas, mapa pessoal com carta do ano vigente, três modalidades de leitura e comparação simbólica.**
