@@ -71,6 +71,6 @@ A consulta usa um algoritmo determinístico e transparente, criado para fins lú
 
 - `index.html` — estrutura e seções do site.
 - `styles.css` — identidade visual responsiva.
-- `script.js` — catálogo das 49 cartas, mapas determinísticos por nome e nascimento, leituras contextuais de 3/5/7 cartas, relações e compatibilidade simbólica.
+- `script.js` — catálogo das 49 cartas, mapas determinísticos pelo nome completo, data de nascimento e ano vigente, leituras contextuais de 3/5/7 cartas, conexões entre cartas e compatibilidade simbólica.
 
 A edição atual não utiliza banco de dados nem envia os nomes e datas digitados para um servidor. Para publicar: no GitHub, abra **Settings → Pages**, escolha **Deploy from a branch**, selecione **main** e a pasta **/(root)** e salve. Após a publicação, o endereço esperado é https://satoshikkj.github.io/SUKYOZ/.
