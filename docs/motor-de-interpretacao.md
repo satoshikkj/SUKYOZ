@@ -161,3 +161,30 @@ As relações são hipóteses de leitura, não eventos objetivos nem previsões.
 ## 16. Integração dos quatro planos
 
 Cada carta é interpretada nos planos material, psicológico, relacional e simbólico-espiritual. Os planos devem ser apresentados separadamente: o material pede observação; o psicológico explora experiência interna; o relacional examina interações; o simbólico-espiritual trabalha com metáforas e significado, sem reivindicar comprovação científica.
+
+
+## 17. Carta do ano vigente e cálculo completo — revisão 3.1
+
+O mapa pessoal contém cinco posições calculadas:
+
+1. **Identidade pelo nome:** usa o nome completo normalizado e seu valor alfabético.
+2. **Dia de nascimento:** combina nome completo, data e dia.
+3. **Mês de nascimento:** combina nome completo, data e mês.
+4. **Ano de nascimento:** combina nome completo, data completa e ano de nascimento.
+5. **Ano vigente:** combina nome completo, data completa de nascimento e ano atual do calendário.
+
+A quinta carta não é uma carta fixa de síntese. Ela é recalculada quando o ano do calendário muda. Por exemplo, em 2026 o cálculo usa 2026; em 2027, usa 2027. O mesmo nome e nascimento podem, portanto, produzir uma nova carta anual.
+
+Em todas as posições, a semente matemática é convertida em um índice de 1 a 49. O algoritmo evita repetir cartas dentro do mapa pessoal. A carta anual é uma associação simbólica calculada; não prevê acontecimentos nem determina como será o ano.
+
+## 18. Inteligência das combinações — revisão 3.1
+
+A análise de conexões cruza três camadas:
+
+- **Família:** identifica o campo da existência que as cartas compartilham ou aproximam.
+- **Arquétipo:** identifica a função de cada carta (Origem, Expansão, Equilíbrio, Conflito, Bloqueio, Transformação ou Integração).
+- **Relação entre funções:** procura complementaridade, tensão ou possível sequência de contribuição.
+
+Cada conexão deve explicar quais cartas estão relacionadas, qual elemento estrutural aproximou as duas e qual pergunta concreta permite verificar se a relação faz sentido na experiência da pessoa. Uma coincidência de família ou arquétipo não é prova de personalidade, destino ou causalidade.
+
+A leitura deve priorizar relações contextualizadas em vez de acumular rótulos. Uma tensão não significa algo ruim; pode representar necessidades diferentes que precisam ser reconhecidas. Uma complementaridade não garante harmonia; depende de atitudes e circunstâncias reais.
