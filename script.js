@@ -26,6 +26,14 @@ cards.forEach(c=>{
   c.relations=[...same.map(other=>"Dialoga com "+other.name+" ("+other.id+"), que compartilha o arquétipo "+c.archetype+" em outra família."),...(complementary?["Pode ser lida em conjunto com "+complementary.name+" ("+complementary.id+"), pelo diálogo entre os arquétipos "+c.archetype+" e "+complementary.archetype+"."]:[])].slice(0,3);
  }
 });
+// Banco central único: 49 cartas normalizadas, com os sete arquétipos e os três estados.
+const SUKYOZ_DATABASE=Object.freeze(cards.map(card=>Object.freeze({...card,states:Object.freeze([...card.states]),relations:Object.freeze([...card.relations])})));
+const STATE_KEYS=["Ativo","Latente","Desregulado"];
+const READING_MODES={
+ Interior:{title:"Interior",description:"Investiga pensamentos, emoções, necessidades, limites e escolhas pessoais.",positions:{3:["O que sinto","O que preciso reconhecer","Atitude consciente"],5:["Emoção central","Crença ou necessidade","Conflito interior","Recurso disponível","Próximo passo"],7:["Ponto de partida interior","Experiência marcante","Estado emocional","Crença pouco examinada","Necessidade essencial","Possibilidade de mudança","Integração pessoal"]}},
+ Relacional:{title:"Relacional",description:"Observa vínculos, comunicação, reciprocidade, limites e contexto social sem presumir pensamentos de terceiros.",positions:{3:["Meu lugar na relação","Dinâmica observável","Diálogo possível"],5:["Minha necessidade","Comportamento observável","Ponto de tensão","Limite ou acordo","Próxima conversa"],7:["Contexto do vínculo","Histórico compartilhado","Minha posição","Perspectiva a investigar","Influências externas","Possibilidade de diálogo","Acordo consciente"]}},
+ Temporal:{title:"Temporal",description:"Organiza passado, presente e futuros condicionais como cenários, nunca como previsões garantidas.",positions:{3:["Contexto anterior","Condição presente","Próxima possibilidade"],5:["Origem","O que permanece do passado","Estado atual","Mudança possível","Preparação consciente"],7:["Ponto de partida","Experiência anterior","Condição presente","Padrão recorrente","Fator de mudança","Cenário condicional","Integração e acompanhamento"]}}
+};
 const familyGrid=document.getElementById("familyGrid");
 familyGrid.innerHTML=families.map((f,i)=>'<button type="button" class="family-card family-'+f[0]+'" data-family="'+f[0]+'" aria-label="Explorar família '+escapeHTML(f[1])+'"><span class="family-topline"><span class="family-code">FAMÍLIA '+f[0]+'</span><span class="family-index">'+String(i+1).padStart(2,"0")+' / 07</span></span><span class="family-glyph">'+f[3]+'</span><span class="family-card-title">'+escapeHTML(f[1])+'</span><span class="family-description">'+escapeHTML(f[2])+'</span><span class="family-count">07 CARTAS <span>↗</span></span></button>').join("");
 familyGrid.addEventListener("click",e=>{const card=e.target.closest("[data-family]");if(!card)return;filter.value=card.dataset.family;renderCards();document.getElementById("biblioteca").scrollIntoView({behavior:"smooth"});search.focus({preventScroll:true})});
@@ -115,28 +123,23 @@ function validPersonName(value){return (String(value||"").trim().match(/[\p{L}]/
 function showFormMessage(element,message,type="error"){element.className="result-area form-feedback-area";element.innerHTML='<div class="form-feedback '+type+'" role="'+(type==="error"?"alert":"status")+'">'+escapeHTML(message)+'</div>'}
 function setDateLimits(){const now=new Date(),today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");["birthDate","dateA","dateB"].forEach(id=>{const field=document.getElementById(id);field.max=today;field.min="1900-01-01"})}
 setDateLimits();
-function deriveMap(name,date,question="",spreadSize=3,state=""){
- const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name);
- const seeds=[
-  hashText(nameNorm)+letterValue(name),
-  day*day+digitSum(day),
-  month*month+digitSum(month)*11,
-  digitSum(year)*year+hashText(String(year)),
-  hashText(nameNorm+"|"+date)+letterValue(name)+digitSum(date)
- ];
+function deriveMap(name,date,question="",spreadSize=3,state="",mode="Interior"){
+ const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name),selectedMode=READING_MODES[mode]?mode:"Interior";
+ const seeds=[hashText(nameNorm)+letterValue(name),day*day+digitSum(day),month*month+digitSum(month)*11,digitSum(year)*year+hashText(String(year)),hashText(nameNorm+"|"+date)+letterValue(name)+digitSum(date)];
  const used=new Set();
- const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index)){index=index%49+1}used.add(index);const card=cards[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index,selectionReason:"A carta foi selecionada pela semente determinística da posição "+POSITIONS[i][0]+". O índice técnico foi "+index+"; isso explica a seleção matemática, não prova uma característica pessoal."}});
+ const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index))index=index%49+1;used.add(index);const card=SUKYOZ_DATABASE[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index,selectedState:state||"Não definido",stateMeaning:state?stateDescription(card,state):"O estado não foi definido; observe a situação antes de classificá-la.",selectionReason:"A carta foi selecionada pela semente determinística da posição "+POSITIONS[i][0]+". O índice técnico foi "+index+"; isso explica a seleção matemática, não prova uma característica pessoal."}});
  const counts={};draws.forEach(c=>counts[c.familyCode]=(counts[c.familyCode]||0)+1);
  const dominant=Object.entries(counts).sort((a,b)=>b[1]-a[1]||FAMILY_ORDER.indexOf(a[0])-FAMILY_ORDER.indexOf(b[0]))[0][0];
- const questionClean=String(question||"").trim();
- let contextual=[];
- if(questionClean){
-  const labels=spreadSize===7?["Origem","Histórico relevante","Estado presente","Aspecto não percebido","Influências","Cenário possível","Integração"]:spreadSize===5?["Estado interior","Influência externa","Conflito principal","Possibilidade de transformação","Direção consciente"]:["Origem","Estado atual","Direção consciente"];
-  const seed=hashText(nameNorm+"|"+date+"|"+questionClean.toLocaleLowerCase("pt-BR"));
-  const usedContext=new Set(draws.map(c=>c.id));
-  contextual=labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(cards[idx].id))idx=(idx+1)%49;usedContext.add(cards[idx].id);return {...cards[idx],position:label,methodIndex:idx+1,positionMeaning:"A carta ocupa esta posição porque a pergunta e os dados informados geraram uma semente determinística para a consulta.",selectionReason:"A seleção veio do cálculo reproduzível da pergunta, nome e nascimento, com prevenção de cartas repetidas no mesmo mapa."}});
- }
- return {name,date,draws,contextual,question:questionClean,state,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
+ const questionClean=String(question||"").trim(),size=[3,5,7].includes(Number(spreadSize))?Number(spreadSize):3;
+ const labels=READING_MODES[selectedMode].positions[size];
+ const seed=hashText(nameNorm+"|"+date+"|"+questionClean.toLocaleLowerCase("pt-BR")+"|"+selectedMode+"|"+size);
+ const usedContext=new Set(draws.map(c=>c.id));
+ const contextual=questionClean?labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(SUKYOZ_DATABASE[idx].id))idx=(idx+1)%49;usedContext.add(SUKYOZ_DATABASE[idx].id);const card=SUKYOZ_DATABASE[idx];return {...card,position:label,methodIndex:idx+1,selectedState:state||"Não definido",stateMeaning:state?stateDescription(card,state):"O estado não foi definido; observe a situação antes de classificá-la.",positionMeaning:READING_MODES[selectedMode].description,selectionReason:"A seleção combina nome, nascimento, pergunta, modalidade "+selectedMode+" e posição "+label+". O cálculo escolhe um índice do catálogo, sem inferir fatos pessoais."}}):[];
+ return {name,date,draws,contextual,question:questionClean,state,mode:selectedMode,modeDescription:READING_MODES[selectedMode].description,spreadSize:size,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
+}
+function stateDescription(card,state){
+ const descriptions={Ativo:"O tema de "+card.name+" está presente na situação e pode ser reconhecido por comportamentos, condições ou acontecimentos observáveis.",Latente:"O tema de "+card.name+" pode existir como possibilidade ou tendência ainda não manifesta; procure condições e sinais concretos antes de concluir.",Desregulado:"O tema de "+card.name+" pode estar aparecendo de forma excessiva, insuficiente ou prejudicial. Considere o risco: "+card.risk};
+ return descriptions[state]||"Estado não definido.";
 }
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
 function relationMarkup(list){
