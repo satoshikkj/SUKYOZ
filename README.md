@@ -58,7 +58,7 @@ SUKYOZ — compreender relações entre aquilo que somos, sentimos, fazemos e aq
 ## Experiência digital
 
 O repositório inclui uma primeira versão navegável do site SUKYOZ:
-- [Abrir o site no GitHub Pages](https://satoshikkj.github.io/SUKYOZ/)
+- Site estático pronto para publicação pelo GitHub Pages (veja instruções abaixo).
 - Biblioteca pesquisável das sete cartas aprofundadas da Família Existência.
 - Consulta simbólica por nome e data de nascimento.
 - Comparação simbólica entre duas pessoas.
@@ -72,4 +72,4 @@ A consulta usa um algoritmo determinístico e transparente, criado para fins lú
 - `styles.css` — identidade visual responsiva.
 - `script.js` — catálogo inicial, pesquisa, detalhes das cartas e consultas locais.
 
-A edição atual não utiliza banco de dados nem envia os nomes e datas digitados para um servidor.
+A edição atual não utiliza banco de dados nem envia os nomes e datas digitados para um servidor. Para publicar: no GitHub, abra **Settings → Pages**, escolha **Deploy from a branch**, selecione **main** e a pasta **/(root)** e salve. Após a publicação, o endereço esperado é https://satoshikkj.github.io/SUKYOZ/.
