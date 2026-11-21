@@ -209,3 +209,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* SUKYOZ — feedback funcional e acessibilidade */
+.form-feedback{padding:13px 15px;margin:0 0 18px;border:1px solid var(--line);border-left:3px solid var(--violet);background:rgba(169,139,213,.08);font-size:12px;line-height:1.7;color:var(--text)}
+.form-feedback.error{border-left-color:#d77b82;background:rgba(215,123,130,.08)}
+.form-feedback.success{border-left-color:#79b99b;background:rgba(121,185,155,.08)}
+.form-feedback-area{display:flex;align-items:flex-start;justify-content:flex-start;min-height:110px}
+.catalog-empty{grid-column:1/-1;padding:25px;border:1px dashed var(--line);text-align:center;color:var(--muted)}
+.catalog-empty b{color:var(--gold);font:17px var(--serif)}
+.catalog-empty p{font-size:11px;line-height:1.7}
+.catalog-empty .btn{margin-top:10px}
+#menuToggle[aria-expanded="true"]{color:var(--gold);border-color:var(--gold)}
+@media(max-width:760px){
+ .menu-toggle{min-width:44px;min-height:44px;touch-action:manipulation}
+ .nav-link{display:block;padding:9px 0;font-size:12px}
+ .family-card,.tarot-card,.btn{touch-action:manipulation}
+ .form-feedback{font-size:12px}
+}
