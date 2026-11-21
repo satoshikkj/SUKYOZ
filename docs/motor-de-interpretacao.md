@@ -1,4 +1,4 @@
-# Motor de interpretação SUKYOZ — versão 2.0
+# Motor de interpretação SUKYOZ — versão 3.1
 
 ## 1. Objetivo
 
