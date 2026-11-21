@@ -14,7 +14,7 @@ cards.push(...expandedCards);
 cards.forEach(c=>{if(!c.familyCode)c.familyCode=c.id.slice(0,2);if(!c.family)c.family=families.find(f=>f[0]===c.familyCode)?.[1]||c.familyCode;});
 const familyGrid=document.getElementById("familyGrid");familyGrid.innerHTML=families.map(f=>'<article class="family-card"><div class="family-code">FAMÍLIA '+f[0]+'</div><div class="family-glyph">'+f[3]+'</div><h3>'+f[1]+'</h3><p>'+f[2]+'</p><div class="family-count">'+(f[0]==="EX"?"7 CARTAS APROFUNDADAS":"7 CARTAS NO CATÁLOGO")+'</div></article>').join("");
 const cardsGrid=document.getElementById("cardsGrid"),search=document.getElementById("cardSearch"),filter=document.getElementById("familyFilter");
-function renderCards(){const q=search.value.toLocaleLowerCase("pt-BR"),f=filter.value;const visible=cards.filter(c=>(f==="all"||c.id.startsWith(f))&&[c.id,c.name,c.archetype,c.word,c.essence].join(" ").toLocaleLowerCase("pt-BR").includes(q));cardsGrid.innerHTML=visible.length?visible.map(c=>'<article class="tarot-card" tabindex="0" role="button" data-card="'+c.id+'">'+cardArtwork(c)+'<div class="card-id">'+c.id+' · '+c.archetype.toUpperCase()+'</div><h3>'+c.name+'</h3><p>'+c.word+' · '+c.element+'</p><div class="card-status">VER SIGNIFICADO ↗</div></article>').join(""):'<p>Nenhuma carta encontrada. Tente outro nome, código ou termo.</p>';document.getElementById("libraryFoot").textContent=visible.length+" carta(s) disponível(is) nesta edição. Total integrado: 49."}
+function renderCards(){const q=search.value.toLocaleLowerCase("pt-BR"),f=filter.value;const visible=cards.filter(c=>(f==="all"||c.id.startsWith(f))&&[c.id,c.name,c.archetype,c.word,c.essence,c.symbol,c.family,c.element,c.good,c.risk,c.question,...renderPlanes(c.planes),...(c.states||[]),...(c.relations||[])].join(" ").toLocaleLowerCase("pt-BR").includes(q));cardsGrid.innerHTML=visible.length?visible.map(c=>'<article class="tarot-card" tabindex="0" role="button" data-card="'+c.id+'">'+cardArtwork(c)+'<div class="card-id">'+c.id+' · '+c.archetype.toUpperCase()+'</div><h3>'+c.name+'</h3><p>'+c.word+' · '+c.element+'</p><div class="card-status">VER SIGNIFICADO ↗</div></article>').join(""):'<p>Nenhuma carta encontrada. Tente outro nome, código ou termo.</p>';document.getElementById("libraryFoot").textContent=visible.length+" carta(s) disponível(is) nesta edição. Total integrado: 49."}
 search.addEventListener("input",renderCards);filter.addEventListener("change",renderCards);renderCards();
 const modal=document.getElementById("cardModal");
 function renderPlanes(planes){if(Array.isArray(planes))return planes;return Object.entries(planes||{}).map(([k,v])=>k+" — "+v)}
@@ -78,7 +78,7 @@ function deriveMap(name,date,question="",spreadSize=3,state=""){
   hashText(nameNorm+"|"+date)+letterValue(name)+digitSum(date)
  ];
  const used=new Set();
- const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index)){index=index%49+1}used.add(index);const card=cards[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index}});
+ const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index)){index=index%49+1}used.add(index);const card=cards[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index,selectionReason:"A carta foi selecionada pela semente determinística da posição "+POSITIONS[i][0]+". O índice técnico foi "+index+"; isso explica a seleção matemática, não prova uma característica pessoal."}});
  const counts={};draws.forEach(c=>counts[c.familyCode]=(counts[c.familyCode]||0)+1);
  const dominant=Object.entries(counts).sort((a,b)=>b[1]-a[1]||FAMILY_ORDER.indexOf(a[0])-FAMILY_ORDER.indexOf(b[0]))[0][0];
  const questionClean=String(question||"").trim();
@@ -87,7 +87,7 @@ function deriveMap(name,date,question="",spreadSize=3,state=""){
   const labels=spreadSize===7?["Origem","Histórico relevante","Estado presente","Aspecto não percebido","Influências","Cenário possível","Integração"]:spreadSize===5?["Estado interior","Influência externa","Conflito principal","Possibilidade de transformação","Direção consciente"]:["Origem","Estado atual","Direção consciente"];
   const seed=hashText(nameNorm+"|"+date+"|"+questionClean.toLocaleLowerCase("pt-BR"));
   const usedContext=new Set(draws.map(c=>c.id));
-  contextual=labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(cards[idx].id))idx=(idx+1)%49;usedContext.add(cards[idx].id);return {...cards[idx],position:label}});
+  contextual=labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(cards[idx].id))idx=(idx+1)%49;usedContext.add(cards[idx].id);return {...cards[idx],position:label,methodIndex:idx+1,positionMeaning:"A carta ocupa esta posição porque a pergunta e os dados informados geraram uma semente determinística para a consulta.",selectionReason:"A seleção veio do cálculo reproduzível da pergunta, nome e nascimento, com prevenção de cartas repetidas no mesmo mapa."}});
  }
  return {name,date,draws,contextual,question:questionClean,state,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
 }
