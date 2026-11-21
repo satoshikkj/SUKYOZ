@@ -35,7 +35,7 @@ function digitSum(value){return String(value).replace(/\D/g,"").split("").reduce
 function reduceTo49(n){return ((Math.abs(n)-1)%49)+1}
 function hashText(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function validBirthDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const d=new Date(value+"T12:00:00");return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===value&&d<=new Date()&&d.getFullYear()>=1900}
-function deriveMap(name,date){
+function deriveMap(name,date,question="",spreadSize=3){
  const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name);
  const seeds=[
   hashText(nameNorm)+letterValue(name),
@@ -48,15 +48,38 @@ function deriveMap(name,date){
  const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index)){index=index%49+1}used.add(index);const card=cards[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index}});
  const counts={};draws.forEach(c=>counts[c.familyCode]=(counts[c.familyCode]||0)+1);
  const dominant=Object.entries(counts).sort((a,b)=>b[1]-a[1]||FAMILY_ORDER.indexOf(a[0])-FAMILY_ORDER.indexOf(b[0]))[0][0];
- return {name,date,draws,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
+ const questionClean=String(question||"").trim();
+ let contextual=[];
+ if(questionClean){
+  const labels=spreadSize===7?["Origem","Histórico relevante","Estado presente","Aspecto não percebido","Influências","Cenário possível","Integração"]:spreadSize===5?["Estado interior","Influência externa","Conflito principal","Possibilidade de transformação","Direção consciente"]:["Origem","Estado atual","Direção consciente"];
+  const seed=hashText(nameNorm+"|"+date+"|"+questionClean.toLocaleLowerCase("pt-BR"));
+  const usedContext=new Set(draws.map(c=>c.id));
+  contextual=labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(cards[idx].id))idx=(idx+1)%49;usedContext.add(cards[idx].id);return {...cards[idx],position:label}});
+ }
+ return {name,date,draws,contextual,question:questionClean,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
 }
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function relationMarkup(list){
+ const complementPairs=[["Origem","Expansão"],["Equilíbrio","Integração"],["Conflito","Transformação"],["Bloqueio","Transformação"]];
+ const opposites={Origem:"Integração",Integração:"Origem",Expansão:"Bloqueio",Bloqueio:"Expansão",Equilíbrio:"Conflito",Conflito:"Equilíbrio"};
+ const found=[];
+ for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){
+  const a=list[i],b=list[j];
+  if(a.familyCode===b.familyCode&&a.id!==b.id)found.push("Complementação possível: "+a.name+" e "+b.name+" abordam a família "+a.family+".");
+  else if(complementPairs.some(p=>(p[0]===a.archetype&&p[1]===b.archetype)||(p[1]===a.archetype&&p[0]===b.archetype)))found.push("Complementação arquetípica: "+a.archetype+" e "+b.archetype+".");
+  if(opposites[a.archetype]===b.archetype)found.push("Contraste: "+a.name+" ("+a.archetype+") e "+b.name+" ("+b.archetype+").");
+  if((a.archetype==="Transformação"&&["Conflito","Bloqueio","Origem"].includes(b.archetype))||(b.archetype==="Transformação"&&["Conflito","Bloqueio","Origem"].includes(a.archetype)))found.push("Possibilidade de transformação entre "+a.name+" e "+b.name+".");
+ }
+ return [...new Set(found)].slice(0,7);
+}
 function mapMarkup(map){
  const cardsHTML=map.draws.map((c,i)=>'<article class="map-card"><div class="result-kicker">0'+(i+1)+' · '+escapeHTML(c.position)+'</div><div class="result-title">'+escapeHTML(c.name)+'</div><p class="result-copy"><b>'+c.id+' · '+escapeHTML(c.family)+'</b> — '+escapeHTML(c.archetype)+'</p><p class="result-copy">'+escapeHTML(c.essence)+'</p><p class="result-copy"><b>Pergunta:</b> '+escapeHTML(c.question)+'</p></article>').join("");
+ const relations=relationMarkup(map.draws);
+ const contextualHTML=map.contextual.length?'<h3>Leitura da pergunta</h3><p class="result-copy">Pergunta: “'+escapeHTML(map.question)+'”</p><div class="map-grid">'+map.contextual.map((c,i)=>'<article class="map-card"><div class="result-kicker">'+String(i+1).padStart(2,"0")+' · '+escapeHTML(c.position)+'</div><div class="result-title">'+escapeHTML(c.name)+'</div><p class="result-copy"><b>'+c.id+' · '+escapeHTML(c.family)+'</b> — '+escapeHTML(c.archetype)+'</p><p class="result-copy">'+escapeHTML(c.essence)+'</p><p class="result-copy"><b>Pergunta:</b> '+escapeHTML(c.question)+'</p></article>').join("")+'</div>':'';
  const familiesHTML=Object.entries(map.familyCounts).sort((a,b)=>b[1]-a[1]).map(([code,count])=>'<span>'+code+' · '+count+'</span>').join("");
- return '<div class="result-kicker">MAPA SIMBÓLICO · 49 CARTAS</div><div class="result-title">'+escapeHTML(map.name)+'</div><p class="result-copy">Família mais presente nesta seleção: <b>'+escapeHTML(map.dominantFamily)+'</b>. Isso descreve a distribuição do sorteio calculado, não uma característica comprovada da pessoa.</p><div class="result-tags">'+familiesHTML+'</div><div class="map-grid">'+cardsHTML+'</div><div class="result-copy"><b>Síntese:</b> observe como os temas escolhidos se complementam ou entram em tensão. A carta de integração é um convite a formular uma atitude consciente, não uma ordem.</div><div class="notice">Método determinístico: o nome é normalizado e convertido em valores alfabéticos; dia, mês e ano geram sementes separadas; uma função hash combina os dados para selecionar cinco cartas distintas do catálogo de 49. O método é autoral e simbólico, não foi validado cientificamente. Os dados são processados localmente e não são enviados a um servidor.</div>';
+ return '<div class="result-kicker">MAPA SIMBÓLICO · 49 CARTAS</div><div class="result-title">'+escapeHTML(map.name)+'</div><p class="result-copy">Família mais presente nesta seleção: <b>'+escapeHTML(map.dominantFamily)+'</b>. Isso descreve a distribuição do sorteio calculado, não uma característica comprovada da pessoa.</p><div class="result-tags">'+familiesHTML+'</div><div class="map-grid">'+cardsHTML+'</div><div class="result-copy"><b>Síntese:</b> observe como os temas escolhidos se complementam ou entram em tensão. A carta de integração é um convite a formular uma atitude consciente, não uma ordem.</div>'+contextualHTML+'<h3>Relações identificadas no mapa</h3><ul>'+(relations.map(x=>'<li>'+escapeHTML(x)+'</li>').join("")||'<li>Não apareceu uma relação estrutural forte nesta combinação.</li>')+'</ul><div class="notice">Método determinístico: o nome é normalizado e convertido em valores alfabéticos; dia, mês e ano geram sementes separadas; uma função hash combina os dados para selecionar cinco cartas distintas do catálogo de 49. O método é autoral e simbólico, não foi validado cientificamente. Os dados são processados localmente e não são enviados a um servidor.</div>';
 }
-document.getElementById("readingForm").addEventListener("submit",e=>{e.preventDefault();const name=document.getElementById("personName").value.trim(),date=document.getElementById("birthDate").value;if(!name||!validBirthDate(date)){alert("Informe um nome e uma data de nascimento válida.");return}const map=deriveMap(name,date);const el=document.getElementById("readingResult");el.className="result-area full-result";el.innerHTML=mapMarkup(map)});
+document.getElementById("readingForm").addEventListener("submit",e=>{e.preventDefault();const name=document.getElementById("personName").value.trim(),date=document.getElementById("birthDate").value;if(!name||!validBirthDate(date)){alert("Informe um nome e uma data de nascimento válida.");return}const question=document.getElementById("readingQuestion")?.value||"",spread=Number(document.getElementById("spreadSize")?.value||3);const map=deriveMap(name,date,question,spread);const el=document.getElementById("readingResult");el.className="result-area full-result";el.innerHTML=mapMarkup(map)});
 function compareMaps(a,b){
  const shared=a.draws.flatMap(x=>b.draws.filter(y=>x.familyCode===y.familyCode).map(y=>({a:x,b:y,type:"família"})));
  const archetypeMatches=a.draws.flatMap(x=>b.draws.filter(y=>x.archetype===y.archetype).map(y=>({a:x,b:y,type:"arquétipo"})));
