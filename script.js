@@ -106,8 +106,8 @@ const POSITIONS=[
  ["Identidade pelo nome","A carta funciona como espelho simbólico associado à forma escrita do nome."],
  ["Dia de nascimento","Representa o tema simbólico associado ao dia do nascimento."],
  ["Mês de nascimento","Aponta uma lente de reflexão relacionada ao mês."],
- ["Ano de nascimento","Representa uma perspectiva simbólica de ciclo e contexto temporal."],
- ["Síntese do mapa","Combina os componentes anteriores para propor uma pergunta integradora."]
+ ["Ano de nascimento","Usa o ano em que a pessoa nasceu, combinado ao nome completo, para selecionar uma carta de referência biográfica."],
+ ["Ano vigente","Calcula uma carta para o ano atual usando o nome completo, a data completa de nascimento e o ano vigente. Ela muda quando o ano muda."]
 ];
 function normalizeText(value){return value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z]/g,"")}
 function letterValue(name){return [...normalizeText(name)].reduce((sum,ch)=>sum+ch.charCodeAt(0)-64,0)}
@@ -125,11 +125,11 @@ function validPersonName(value){return (String(value||"").trim().match(/[\p{L}]/
 function showFormMessage(element,message,type="error"){element.className="result-area form-feedback-area";element.innerHTML='<div class="form-feedback '+type+'" role="'+(type==="error"?"alert":"status")+'">'+escapeHTML(message)+'</div>'}
 function setDateLimits(){const now=new Date(),today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");["birthDate","dateA","dateB"].forEach(id=>{const field=document.getElementById(id);field.max=today;field.min="1900-01-01"})}
 setDateLimits();
-function deriveMap(name,date,question="",spreadSize=3,state="",mode="Interior"){
- const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name),selectedMode=READING_MODES[mode]?mode:"Interior";
- const seeds=[hashText(nameNorm)+letterValue(name),day*day+digitSum(day),month*month+digitSum(month)*11,digitSum(year)*year+hashText(String(year)),hashText(nameNorm+"|"+date)+letterValue(name)+digitSum(date)];
+function deriveMap(name,date,question="",spreadSize=3,state="",mode="Interior",referenceYear=new Date().getFullYear()){
+ const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name),selectedMode=READING_MODES[mode]?mode:"Interior",currentYear=Number(referenceYear);
+ const seeds=[hashText(nameNorm+"|NOME COMPLETO")+letterValue(name),hashText(nameNorm+"|"+date+"|DIA|"+day)+day*day,hashText(nameNorm+"|"+date+"|MES|"+month)+month*month+digitSum(month)*11,hashText(nameNorm+"|"+date+"|ANO NASCIMENTO|"+year)+digitSum(year)*year,hashText(nameNorm+"|"+date+"|ANO VIGENTE|"+currentYear)+letterValue(name)*digitSum(date)*currentYear];
  const used=new Set();
- const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index))index=index%49+1;used.add(index);const card=SUKYOZ_DATABASE[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:POSITIONS[i][1],methodIndex:index,selectedState:state||"Não definido",stateMeaning:state?stateDescription(card,state):"O estado não foi definido; observe a situação antes de classificá-la.",selectionReason:"A carta foi selecionada pela semente determinística da posição "+POSITIONS[i][0]+". O índice técnico foi "+index+"; isso explica a seleção matemática, não prova uma característica pessoal."}});
+ const draws=seeds.map((seed,i)=>{let index=reduceTo49(seed);while(used.has(index))index=index%49+1;used.add(index);const card=SUKYOZ_DATABASE[index-1];return {...card,position:POSITIONS[i][0],positionMeaning:i===4?"Carta anual calculada com o nome completo normalizado, a data completa de nascimento e o ano vigente ("+currentYear+"). A cada mudança de ano, o cálculo muda; o resultado é simbólico, não uma previsão.":POSITIONS[i][1],methodIndex:index,selectedState:state||"Não definido",stateMeaning:state?stateDescription(card,state):"O estado não foi definido; observe a situação antes de classificá-la.",selectionReason:(i===4?"O cálculo anual combina hash do nome completo + data de nascimento + ano vigente ("+currentYear+"), valor alfabético do nome e soma dos dígitos da data. ":"A semente combina o nome completo e os componentes da data correspondentes à posição. ")+"O índice técnico foi "+index+" de 49; isso explica a seleção matemática, não prova uma característica pessoal."}});
  const counts={};draws.forEach(c=>counts[c.familyCode]=(counts[c.familyCode]||0)+1);
  const dominant=Object.entries(counts).sort((a,b)=>b[1]-a[1]||FAMILY_ORDER.indexOf(a[0])-FAMILY_ORDER.indexOf(b[0]))[0][0];
  const questionClean=String(question||"").trim(),size=[3,5,7].includes(Number(spreadSize))?Number(spreadSize):3;
@@ -137,7 +137,7 @@ function deriveMap(name,date,question="",spreadSize=3,state="",mode="Interior"){
  const seed=hashText(nameNorm+"|"+date+"|"+questionClean.toLocaleLowerCase("pt-BR")+"|"+selectedMode+"|"+size);
  const usedContext=new Set(draws.map(c=>c.id));
  const contextual=questionClean?labels.map((label,i)=>{let idx=((seed+Math.imul(i+1,2654435761))>>>0)%49;while(usedContext.has(SUKYOZ_DATABASE[idx].id))idx=(idx+1)%49;usedContext.add(SUKYOZ_DATABASE[idx].id);const card=SUKYOZ_DATABASE[idx];return {...card,position:label,methodIndex:idx+1,selectedState:state||"Não definido",stateMeaning:state?stateDescription(card,state):"O estado não foi definido; observe a situação antes de classificá-la.",positionMeaning:READING_MODES[selectedMode].description,selectionReason:"A seleção combina nome, nascimento, pergunta, modalidade "+selectedMode+" e posição "+label+". O cálculo escolhe um índice do catálogo, sem inferir fatos pessoais."}}):[];
- return {name,date,draws,contextual,question:questionClean,state,mode:selectedMode,modeDescription:READING_MODES[selectedMode].description,spreadSize:size,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
+ return {name,date,draws,contextual,question:questionClean,state,mode:selectedMode,currentYear,modeDescription:READING_MODES[selectedMode].description,spreadSize:size,dominantFamily:families.find(f=>f[0]===dominant)?.[1]||dominant,dominantCode:dominant,archetypeCounts:ARCHETYPES.map(a=>({name:a,count:draws.filter(c=>c.archetype===a).length})).filter(x=>x.count),familyCounts:counts};
 }
 function stateDescription(card,state){
  const descriptions={Ativo:"O tema de "+card.name+" está presente na situação e pode ser reconhecido por comportamentos, condições ou acontecimentos observáveis.",Latente:"O tema de "+card.name+" pode existir como possibilidade ou tendência ainda não manifesta; procure condições e sinais concretos antes de concluir.",Desregulado:"O tema de "+card.name+" pode estar aparecendo de forma excessiva, insuficiente ou prejudicial. Considere o risco: "+card.risk};
@@ -146,18 +146,24 @@ function stateDescription(card,state){
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
 function relationMarkup(list){
  const complementPairs=[["Origem","Expansão"],["Equilíbrio","Integração"],["Conflito","Transformação"],["Bloqueio","Transformação"]];
- const contradictionPairs=[["Origem","Integração"],["Expansão","Bloqueio"],["Equilíbrio","Conflito"]];
- const causalPairs=[["Origem","Expansão"],["Conflito","Transformação"],["Bloqueio","Transformação"]];
- const found=[];
+ const tensionPairs=[["Origem","Integração"],["Expansão","Bloqueio"],["Equilíbrio","Conflito"]];
+ const contributionPairs=[["Origem","Expansão"],["Conflito","Transformação"],["Bloqueio","Transformação"]];
+ const familyLenses={EX:"identidade e mudança",EM:"experiência emocional",VO:"motivação e escolha",CO:"vínculos e influência mútua",XP:"comunicação e manifestação",PE:"observação e interpretação",TR:"sentido e visão de conjunto"};
+ const out=[],has=(pairs,x,y)=>pairs.some(p=>(p[0]===x&&p[1]===y)||(p[1]===x&&p[0]===y));
  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){
-  const a=list[i],b=list[j],pair=(pairs,x,y)=>pairs.some(p=>p[0]===x&&p[1]===y);
-  if(a.familyCode===b.familyCode&&a.id!==b.id)found.push("COMPLEMENTARIDADE — "+a.name+" e "+b.name+" tratam dimensões da família "+a.family+"; podem apoiar partes diferentes da mesma reflexão.");
-  if(pair(complementPairs,a.archetype,b.archetype)||pair(complementPairs,b.archetype,a.archetype))found.push("COMPLEMENTARIDADE — "+a.name+" ("+a.archetype+") e "+b.name+" ("+b.archetype+") podem representar etapas que se apoiam.");
-  if(pair(contradictionPairs,a.archetype,b.archetype)||pair(contradictionPairs,b.archetype,a.archetype))found.push("CONTRADIÇÃO / TENSÃO — "+a.name+" ("+a.archetype+") e "+b.name+" ("+b.archetype+") podem expressar necessidades ou direções em conflito; investigue o contexto antes de escolher.");
-  if(pair(causalPairs,a.archetype,b.archetype)||pair(causalPairs,b.archetype,a.archetype))found.push("HIPÓTESE DE CONTRIBUIÇÃO — a dinâmica representada por "+a.name+" e "+b.name+" pode participar de uma transição. A sequência não demonstra causalidade; procure fatos e explicações alternativas.");
-  if((a.archetype==="Transformação"&&["Conflito","Bloqueio","Origem"].includes(b.archetype))||(b.archetype==="Transformação"&&["Conflito","Bloqueio","Origem"].includes(a.archetype)))found.push("TRANSFORMAÇÃO — "+a.name+" e "+b.name+" podem simbolizar uma passagem entre condição e mudança. A transformação depende de escolhas, recursos e circunstâncias.");
+  const a=list[i],b=list[j];if(!a||!b||a.id===b.id)continue;
+  const sameFamily=a.familyCode===b.familyCode,sameArchetype=a.archetype===b.archetype,tags=[];
+  if(sameFamily)tags.push("mesma família: "+(familyLenses[a.familyCode]||a.family));
+  if(sameArchetype)tags.push("mesmo arquétipo: "+a.archetype);
+  if(has(complementPairs,a.archetype,b.archetype))tags.push("complementaridade entre "+a.archetype+" e "+b.archetype);
+  if(has(tensionPairs,a.archetype,b.archetype))tags.push("tensão entre "+a.archetype+" e "+b.archetype);
+  if(has(contributionPairs,a.archetype,b.archetype))tags.push("possível sequência de contribuição");
+  if(!tags.length)continue;
+  const relation=has(tensionPairs,a.archetype,b.archetype)?"TENSÃO A INVESTIGAR":has(complementPairs,a.archetype,b.archetype)?"CONEXÃO COMPLEMENTAR":"CONEXÃO TEMÁTICA";
+  const bridge=sameFamily?"As duas cartas olham para "+(familyLenses[a.familyCode]||a.family)+".":sameArchetype?"As cartas compartilham a função arquetípica "+a.archetype+", mas a expressam em famílias diferentes.":"Uma carta pode oferecer contexto para a outra, sem que isso indique uma causa real.";
+  out.push(relation+" — "+a.name+" + "+b.name+". "+bridge+" Relação identificada: "+tags.join("; ")+". Pergunta de conexão: como "+a.name.toLowerCase()+" pode influenciar a forma como você vive "+b.name.toLowerCase()+" nesta situação concreta?");
  }
- return [...new Set(found)].slice(0,12);
+ return [...new Set(out)].sort((a,b)=>{const rank=x=>x.startsWith("TENSÃO")?0:x.startsWith("CONEXÃO COMPLEMENTAR")?1:2;return rank(a)-rank(b)}).slice(0,18);
 }
 function mapMarkup(map){
  const renderOne=(c,i)=>'<article class="map-card">'+cardArtwork(c)+'<div class="result-kicker">'+String(i+1).padStart(2,"0")+' · '+escapeHTML(c.position)+'</div><div class="result-title">'+escapeHTML(c.name)+'</div><p class="result-copy"><b>'+c.id+' · '+escapeHTML(c.family)+'</b> — '+escapeHTML(c.archetype)+'</p><p class="result-copy">'+escapeHTML(c.essence)+'</p><p class="result-copy"><b>Estado:</b> '+escapeHTML(c.selectedState||"Não definido")+' — '+escapeHTML(c.stateMeaning||"Observe a situação antes de classificar.")+'</p><p class="result-copy"><b>Quatro planos:</b> '+renderPlanes(c.planes).map(escapeHTML).join(" · ")+'</p><p class="result-copy"><b>Pergunta:</b> '+escapeHTML(c.question)+'</p><details class="why-card"><summary>Por que esta carta apareceu?</summary><p>'+escapeHTML(c.positionMeaning||"Esta carta ocupa esta posição como uma lente simbólica para a leitura.")+'</p><p>'+escapeHTML(c.selectionReason||"A seleção decorre do cálculo determinístico do método. Isso explica a escolha matemática, não comprova uma característica pessoal.")+'</p></details></article>';
