@@ -105,3 +105,24 @@ O resultado oferece temas para diálogo e reflexão. Não calcula uma porcentage
 **A intuição alerta; a observação investiga; o tempo revela; a razão decide.**
 
 O SUKYOZ oferece símbolos para organizar perguntas. A pessoa continua responsável por interpretar a própria realidade e decidir o que fazer.
+
+
+## 10. Transparência da seleção das cartas — revisão 2.2
+
+Cada carta exibida em um mapa informa a posição que ocupa e a razão metodológica da seleção. No mapa pessoal, a posição está associada a uma semente calculada a partir do nome normalizado e de componentes da data. Na leitura contextual, a semente combina nome, nascimento e pergunta; cada posição recebe um índice calculado e a seleção evita repetir cartas do mapa pessoal ou da própria sequência.
+
+A explicação apresentada ao usuário distingue duas coisas:
+- **Função interpretativa:** por que a posição existe (origem, estado, influência, integração etc.).
+- **Mecanismo de seleção:** como o algoritmo escolheu o índice da carta.
+
+O índice explica o funcionamento matemático, não revela uma causa oculta nem prova algo sobre a pessoa.
+
+## 11. Conteúdo completo das cartas
+
+A biblioteca contém 49 identificadores únicos, distribuídos igualmente entre as sete famílias. Cada carta é apresentada com arte vetorial própria, código, nome, arquétipo, símbolo, essência, quatro planos, potencial construtivo, risco e pergunta reflexiva. Estados e relações complementares são apresentados como lentes interpretativas; quando uma relação é derivada pela estrutura dos arquétipos, isso deve ser entendido como proposta simbólica, não como fato causal.
+
+A pesquisa do catálogo considera código, nome, arquétipo, palavra central, essência, símbolo, família, elemento, potencial construtivo, risco, pergunta, planos, estados e relações.
+
+## 12. Compatibilidade ampliada
+
+A comparação apresenta a distribuição das sete famílias nos dois mapas, temas compartilhados, arquétipos em comum, cartas idênticas, contrastes e perguntas para diálogo. Não produz percentual nem classifica uma relação como boa ou ruim. A comparação continua sendo simbólica e limitada às cartas selecionadas pelo método.
