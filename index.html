@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#09080d">
+  <meta name="description" content="SUKYOZ — sistema simbólico, filosófico e reflexivo de 49 cartas. Explore famílias, significados e leituras por nome e nascimento.">
+  <title>SUKYOZ — Um mapa para compreender a existência</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar"><a class="brand" href="#inicio" aria-label="SUKYOZ início"><span class="brand-mark">S</span><span>SUKYOZ<small>O MAPA DA EXISTÊNCIA</small></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+    <nav id="mainNav"><a href="#inicio" class="nav-link active">Início</a><a href="#familias" class="nav-link">As famílias</a><a href="#biblioteca" class="nav-link">Cartas</a><a href="#consulta" class="nav-link">Consulta</a><a href="#compatibilidade" class="nav-link">Compatibilidade</a></nav>
+  </header>
+  <main>
+    <section class="hero section" id="inicio"><div class="hero-copy"><div class="eyebrow"><span></span> UM SISTEMA DE AUTOCONHECIMENTO</div>
+      <h1>Compreender a existência é compreender <em>o que nos transforma.</em></h1>
+      <p class="hero-lead">Um universo de símbolos, perguntas e perspectivas para investigar quem somos, o que sentimos, como nos relacionamos e o que escolhemos construir.</p>
+      <div class="hero-actions"><a class="btn primary" href="#biblioteca">Explorar as cartas <span>↗</span></a><a class="btn ghost" href="#consulta">Iniciar uma consulta</a></div>
+      <div class="hero-note"><span class="pulse"></span> 49 CARTAS · 7 FAMÍLIAS · 4 PLANOS DE INTERPRETAÇÃO</div></div>
+      <div class="hero-art"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="sigil"><div class="sigil-inner">S</div><i>✧</i></div><div class="art-caption">EXISTÊNCIA · CONSCIÊNCIA · TRANSFORMAÇÃO</div></div>
+    </section>
+    <section class="intro-strip"><div><strong>Não é sobre prever o futuro.</strong><span>É sobre ampliar as perguntas que fazemos ao presente.</span></div><span class="strip-symbol">✧</span></section>
+    <section class="section" id="familias"><div class="section-heading"><div><div class="eyebrow">A ESTRUTURA</div><h2>Sete caminhos de investigação</h2></div><p>As famílias representam dimensões da experiência humana. Cada uma contém sete arquétipos.</p></div><div class="family-grid" id="familyGrid"></div></section>
+    <section class="section library-section" id="biblioteca"><div class="section-heading"><div><div class="eyebrow">BIBLIOTECA SIMBÓLICA</div><h2>Explore as cartas</h2></div><p>Pesquise pelo nome, código ou conceito. A primeira família está aprofundada nesta edição.</p></div>
+      <div class="library-tools"><label class="search-box"><span>⌕</span><input id="cardSearch" type="search" placeholder="Pesquisar carta, código ou significado..."></label><select id="familyFilter" aria-label="Filtrar família"><option value="all">Todas as famílias</option><option value="EX">Existência</option><option value="EM">Emoção</option><option value="VO">Vontade</option><option value="CO">Conexão</option><option value="XP">Expressão</option><option value="PE">Percepção</option><option value="TR">Transcendência</option></select></div>
+      <div class="cards-grid" id="cardsGrid"></div><p class="library-foot" id="libraryFoot"></p>
+    </section>
+    <section class="section consult-section" id="consulta"><div class="section-heading"><div><div class="eyebrow">MAPA PESSOAL</div><h2>Consulta por nome e nascimento</h2></div><p>Uma leitura simbólica gerada por um método transparente do próprio SUKYOZ.</p></div>
+      <div class="tool-panel"><form id="readingForm" class="tool-form"><label>Nome<input id="personName" required maxlength="70" placeholder="Digite seu nome"></label><label>Data de nascimento<input id="birthDate" type="date" required></label><button class="btn primary" type="submit">Revelar meu mapa <span>↗</span></button></form><div id="readingResult" class="result-area empty-result"><div class="result-orb">✧</div><p>Seu resultado aparecerá aqui.</p><small>O nome e a data são usados apenas nesta sessão; não são enviados a um servidor.</small></div></div>
+    </section>
+    <section class="section compatibility-section" id="compatibilidade"><div class="section-heading"><div><div class="eyebrow">ENCONTRO DE CAMINHOS</div><h2>Compatibilidade simbólica</h2></div><p>Compare dois mapas a partir dos nomes e datas de nascimento. O resultado é uma ferramenta de reflexão, não um teste científico de relacionamento.</p></div>
+      <div class="tool-panel"><form id="compatForm" class="tool-form two-person"><div class="person-fields"><h3>Pessoa A</h3><label>Nome<input id="nameA" required maxlength="70" placeholder="Primeira pessoa"></label><label>Nascimento<input id="dateA" type="date" required></label></div><div class="person-fields"><h3>Pessoa B</h3><label>Nome<input id="nameB" required maxlength="70" placeholder="Segunda pessoa"></label><label>Nascimento<input id="dateB" type="date" required></label></div><button class="btn primary" type="submit">Analisar conexão <span>↗</span></button></form><div id="compatResult" class="result-area empty-result"><div class="result-orb">∞</div><p>O encontro dos dois mapas será apresentado aqui.</p><small>Compatibilidade não determina sucesso, amor, caráter ou destino.</small></div></div>
+    </section>
+    <section class="principles"><div class="section"><div class="eyebrow">A FILOSOFIA SUKYOZ</div><h2>Intuição alerta.<br><em>Observação investiga.</em></h2><p>O tempo revela; a razão decide. Os símbolos oferecem perspectivas, mas não substituem a realidade, o diálogo ou escolhas conscientes.</p><a href="docs/manifesto.md" class="text-link">Conheça o manifesto ↗</a></div></section>
+  </main>
+  <footer><a class="brand" href="#inicio"><span class="brand-mark">S</span><span>SUKYOZ<small>O MAPA DA EXISTÊNCIA</small></span></a><p>Um sistema simbólico para reflexão e autoconhecimento.</p><span>© SUKYOZ · EDIÇÃO FUNDADORA</span></footer>
+  <div class="modal" id="cardModal" aria-hidden="true"><div class="modal-backdrop" data-close="true"></div><article class="modal-card"><button class="modal-close" id="modalClose" aria-label="Fechar">×</button><div id="modalContent"></div></article></div>
+  <script src="script.js"></script>
+</body></html>
