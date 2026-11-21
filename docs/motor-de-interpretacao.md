@@ -126,3 +126,38 @@ A pesquisa do catálogo considera código, nome, arquétipo, palavra central, es
 ## 12. Compatibilidade ampliada
 
 A comparação apresenta a distribuição das sete famílias nos dois mapas, temas compartilhados, arquétipos em comum, cartas idênticas, contrastes e perguntas para diálogo. Não produz percentual nem classifica uma relação como boa ou ruim. A comparação continua sendo simbólica e limitada às cartas selecionadas pelo método.
+
+
+## 13. Banco central e arquétipos — revisão 3.0
+
+O catálogo central do motor é composto pelas 49 cartas com identificador, família, arquétipo, essência, quatro planos, potencial construtivo, risco, estados e relações. Os sete arquétipos se repetem em cada família: Origem, Expansão, Equilíbrio, Conflito, Bloqueio, Transformação e Integração.
+
+Os estados são lentes contextuais, não rótulos pessoais:
+- **Ativo:** o tema aparece em fatos, atitudes ou condições observáveis.
+- **Latente:** o tema é possibilidade ainda não manifestada.
+- **Desregulado:** o tema aparece de forma excessiva, insuficiente ou prejudicial.
+
+O estado é informado pela pessoa que conduz a leitura; nome e nascimento não permitem inferi-lo. A mesma carta pode ocupar estados diferentes em contextos diferentes.
+
+## 14. Modalidades de leitura
+
+A consulta contextual permite selecionar uma modalidade:
+
+- **Interior:** emoções, necessidades, crenças, limites e escolhas pessoais.
+- **Relacional:** vínculos, comunicação, comportamentos observáveis, limites e acordos. Não presume pensamentos ou sentimentos de terceiros.
+- **Temporal:** passado, presente e cenários futuros condicionais. Não apresenta previsões garantidas.
+
+Cada modalidade oferece posições próprias em leituras de 3, 5 ou 7 cartas. A modalidade, o tamanho e a pergunta integram a semente determinística; portanto, alterá-los pode mudar as cartas selecionadas.
+
+## 15. Relações entre cartas
+
+- **Complementaridade:** dois temas podem apoiar etapas diferentes de um processo.
+- **Contradição:** duas cartas podem representar necessidades, impulsos ou direções em tensão.
+- **Causalidade interpretativa:** uma carta pode sugerir um fator que contribui para outro tema, mas a relação precisa ser investigada por evidências e contexto. A sequência não prova causa e efeito.
+- **Transformação:** uma carta pode representar a passagem de uma condição para outra, sem pressupor que a mudança seja inevitável ou que o sofrimento seja necessário.
+
+As relações são hipóteses de leitura, não eventos objetivos nem previsões.
+
+## 16. Integração dos quatro planos
+
+Cada carta é interpretada nos planos material, psicológico, relacional e simbólico-espiritual. Os planos devem ser apresentados separadamente: o material pede observação; o psicológico explora experiência interna; o relacional examina interações; o simbólico-espiritual trabalha com metáforas e significado, sem reivindicar comprovação científica.
