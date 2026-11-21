@@ -43,7 +43,7 @@ O SUKYOZ combina três perspectivas:
 
 ## Estado do projeto
 
-**Edição estrutural 1.0 — 49/49 cartas catalogadas.**
+**Edição digital 3.0 — motor simbólico integrado com 49 cartas, sete arquétipos, três estados e três modalidades de leitura.**
 
 Esta edição consolida a identidade conceitual, as sete famílias, os princípios e os primeiros métodos de leitura. A próxima etapa poderá desenvolver identidade visual oficial, sistema numérico, relações formais entre cartas e uma implementação digital.
 
@@ -61,11 +61,11 @@ SUKYOZ — compreender relações entre aquilo que somos, sentimos, fazemos e aq
 O repositório inclui uma primeira versão navegável do site SUKYOZ:
 - Site estático pronto para publicação pelo GitHub Pages (veja instruções abaixo).
 - Biblioteca pesquisável com as 49 cartas do catálogo e conteúdo aprofundado da Família Existência.
-- Motor de leitura com 49 cartas, mapa simbólico por nome e nascimento e métodos contextuais de 3, 5 ou 7 cartas.
-- Comparação simbólica entre duas pessoas por famílias, arquétipos, coincidências e contrastes.
+- Motor central com 49 cartas, sete arquétipos, estados Ativo/Latente/Desregulado, quatro planos de interpretação e modalidades Interior/Relacional/Temporal com leituras contextuais de 3, 5 ou 7 cartas.
+- Comparação simbólica entre duas pessoas por famílias, arquétipos, coincidências e contrastes, sem percentuais deterministas.
 - Layout responsivo para celular e computador.
 
-A consulta usa um algoritmo determinístico e transparente, criado para fins lúdicos e reflexivos. Os resultados não são validados cientificamente, não diagnosticam personalidade e não determinam compatibilidade, destino ou futuro. As 49 cartas estão integradas ao mecanismo. A profundidade editorial das famílias II a VII poderá ser ampliada em novas edições.
+A consulta usa um algoritmo determinístico e transparente, criado para fins lúdicos e reflexivos. Os resultados não são validados cientificamente, não diagnosticam personalidade e não determinam compatibilidade, destino ou futuro. As 49 cartas estão integradas ao mecanismo. As interpretações combinatórias são hipóteses simbólicas e não provam causalidade, compatibilidade real ou previsões.
 
 ## Arquivos do site
 
