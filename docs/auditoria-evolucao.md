@@ -114,3 +114,14 @@ Até que essas definições sejam aprovadas, os recursos atuais permanecem prese
 Uma fase só será marcada como concluída quando sua entrega existir no repositório, os testes aplicáveis forem executados e as limitações restantes forem registradas. Verificação estática não será descrita como teste real de navegador ou celular.
 
 **Princípio técnico:** evoluir por módulos, com contratos de dados e testes de regressão, preservando a experiência atual do SUKYOZ.
+
+
+## 9. Trabalho adicional aplicado após a auditoria
+
+- Corrigido um defeito no fluxo de leitura contextual: a função de interpretação acessava uma variável `map` que não existia em seu escopo. Agora recebe explicitamente a modalidade da leitura.
+- Ampliada a comparação entre mapas para identificar complementaridade, compensação, intensificação e transformação, além dos contrastes já existentes. As regras são estruturais e simbólicas, não medidas de compatibilidade.
+- Criada documentação aprofundada das famílias Emoção, Vontade, Conexão, Expressão, Percepção e Transcendência. Cada uma descreve princípios, sete cartas, estados, riscos, perguntas e relações prioritárias. A documentação aprofundada de Existência já existia.
+- Adicionado teste automatizado de regressão para catálogo, distribuição das famílias, arquétipos, campos essenciais, modalidades, leitura contextual, compatibilidade e estrutura de navegação.
+- Adicionado workflow do GitHub Actions para verificar sintaxe JavaScript e executar os testes em pushes e pull requests na branch principal.
+
+**Estado de validação:** os arquivos de teste e o workflow foram adicionados, mas a execução do workflow remoto ainda precisa ser observada no GitHub Actions. Portanto, a suíte está configurada, não certificada como aprovada nesta revisão.
