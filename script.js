@@ -30,7 +30,7 @@ const familyGrid=document.getElementById("familyGrid");
 familyGrid.innerHTML=families.map((f,i)=>'<button type="button" class="family-card family-'+f[0]+'" data-family="'+f[0]+'" aria-label="Explorar família '+escapeHTML(f[1])+'"><span class="family-topline"><span class="family-code">FAMÍLIA '+f[0]+'</span><span class="family-index">'+String(i+1).padStart(2,"0")+' / 07</span></span><span class="family-glyph">'+f[3]+'</span><span class="family-card-title">'+escapeHTML(f[1])+'</span><span class="family-description">'+escapeHTML(f[2])+'</span><span class="family-count">07 CARTAS <span>↗</span></span></button>').join("");
 familyGrid.addEventListener("click",e=>{const card=e.target.closest("[data-family]");if(!card)return;filter.value=card.dataset.family;renderCards();document.getElementById("biblioteca").scrollIntoView({behavior:"smooth"});search.focus({preventScroll:true})});
 const cardsGrid=document.getElementById("cardsGrid"),search=document.getElementById("cardSearch"),filter=document.getElementById("familyFilter");
-function normalizeSearch(value){return String(value||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLocaleLowerCase("pt-BR").trim()}
+function normalizeSearch(value){return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("pt-BR").trim()}
 function renderCards(){
  const q=normalizeSearch(search.value),f=filter.value;
  const visible=cards.filter(c=>(f==="all"||c.familyCode===f)&&normalizeSearch([c.id,c.name,c.archetype,c.word,c.essence,c.symbol,c.family,c.element,c.good,c.risk,c.question,...renderPlanes(c.planes),...(c.states||[]),...(c.relations||[])].join(" ")).includes(q));
@@ -105,13 +105,13 @@ function digitSum(value){return String(value).replace(/\D/g,"").split("").reduce
 function reduceTo49(n){return ((Math.abs(n)-1)%49)+1}
 function hashText(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function validBirthDate(value){
- if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
  const [year,month,day]=value.split("-").map(Number),d=new Date(year,month-1,day);
  if(d.getFullYear()!==year||d.getMonth()!==month-1||d.getDate()!==day||year<1900)return false;
  const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
  return d<=today;
 }
-function validPersonName(value){return (String(value||"").trim().match(/[\\p{L}]/gu)||[]).length>=2}
+function validPersonName(value){return (String(value||"").trim().match(/[\p{L}]/gu)||[]).length>=2}
 function showFormMessage(element,message,type="error"){element.className="result-area form-feedback-area";element.innerHTML='<div class="form-feedback '+type+'" role="'+(type==="error"?"alert":"status")+'">'+escapeHTML(message)+'</div>'}
 function setDateLimits(){const now=new Date(),today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");["birthDate","dateA","dateB"].forEach(id=>{const field=document.getElementById(id);field.max=today;field.min="1900-01-01"})}
 setDateLimits();
