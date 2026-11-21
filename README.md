@@ -59,17 +59,17 @@ SUKYOZ — compreender relações entre aquilo que somos, sentimos, fazemos e aq
 
 O repositório inclui uma primeira versão navegável do site SUKYOZ:
 - Site estático pronto para publicação pelo GitHub Pages (veja instruções abaixo).
-- Biblioteca pesquisável das sete cartas aprofundadas da Família Existência.
-- Consulta simbólica por nome e data de nascimento.
-- Comparação simbólica entre duas pessoas.
+- Biblioteca pesquisável com as 49 cartas do catálogo e conteúdo aprofundado da Família Existência.
+- Motor de leitura com 49 cartas, mapa simbólico por nome e nascimento e métodos contextuais de 3, 5 ou 7 cartas.
+- Comparação simbólica entre duas pessoas por famílias, arquétipos, coincidências e contrastes.
 - Layout responsivo para celular e computador.
 
-A consulta usa um algoritmo determinístico e transparente, criado para fins lúdicos e reflexivos. Os resultados não são validados cientificamente, não diagnosticam personalidade e não determinam compatibilidade, destino ou futuro. As demais 42 cartas permanecem em desenvolvimento e serão incorporadas conforme forem aprofundadas.
+A consulta usa um algoritmo determinístico e transparente, criado para fins lúdicos e reflexivos. Os resultados não são validados cientificamente, não diagnosticam personalidade e não determinam compatibilidade, destino ou futuro. As 49 cartas estão integradas ao mecanismo. A profundidade editorial das famílias II a VII poderá ser ampliada em novas edições.
 
 ## Arquivos do site
 
 - `index.html` — estrutura e seções do site.
 - `styles.css` — identidade visual responsiva.
-- `script.js` — catálogo inicial, pesquisa, detalhes das cartas e consultas locais.
+- `script.js` — catálogo das 49 cartas, motor determinístico de mapas, leituras de 3/5/7 cartas, relações e compatibilidade simbólica.
 
 A edição atual não utiliza banco de dados nem envia os nomes e datas digitados para um servidor. Para publicar: no GitHub, abra **Settings → Pages**, escolha **Deploy from a branch**, selecione **main** e a pasta **/(root)** e salve. Após a publicação, o endereço esperado é https://satoshikkj.github.io/SUKYOZ/.
