@@ -53,3 +53,23 @@ A documentação principal está em português. Os identificadores das cartas s�
 ---
 
 SUKYOZ — compreender relações entre aquilo que somos, sentimos, fazemos e aquilo que nos transforma.
+
+
+## Experiência digital
+
+O repositório inclui uma primeira versão navegável do site SUKYOZ:
+- [Abrir o site no GitHub Pages](https://satoshikkj.github.io/SUKYOZ/)
+- Biblioteca pesquisável das sete cartas aprofundadas da Família Existência.
+- Consulta simbólica por nome e data de nascimento.
+- Comparação simbólica entre duas pessoas.
+- Layout responsivo para celular e computador.
+
+A consulta usa um algoritmo determinístico e transparente, criado para fins lúdicos e reflexivos. Os resultados não são validados cientificamente, não diagnosticam personalidade e não determinam compatibilidade, destino ou futuro. As demais 42 cartas permanecem em desenvolvimento e serão incorporadas conforme forem aprofundadas.
+
+## Arquivos do site
+
+- `index.html` — estrutura e seções do site.
+- `styles.css` — identidade visual responsiva.
+- `script.js` — catálogo inicial, pesquisa, detalhes das cartas e consultas locais.
+
+A edição atual não utiliza banco de dados nem envia os nomes e datas digitados para um servidor.
