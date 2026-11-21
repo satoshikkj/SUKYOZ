@@ -52,7 +52,7 @@ function readingSynthesis(map){
 function interpretationDetails(cardsList){
  return '<section class="interpretation-panel"><div class="result-kicker">RESPOSTA SIMBÓLICA À PERGUNTA</div><h3>Como interpretar esta leitura</h3><p class="result-copy">As cartas não conhecem fatos que você não informou. Elas organizam perspectivas para ajudar a pensar na pergunta, não entregam uma resposta objetiva ou uma previsão.</p>'+cardsList.map((card,i)=>'<article class="interpretation-step"><div class="result-kicker">ETAPA '+String(i+1).padStart(2,"0")+' · '+escapeHTML(card.position)+'</div><h4>'+escapeHTML(card.name)+'</h4><p>'+escapeHTML(interpretPosition(card,card.position))+'</p><p class="prompt-line"><b>Pergunta para aprofundar:</b> '+escapeHTML(card.question)+'</p></article>').join("")+'</section>';
 }
-\n// SUKYOZ ENGINE 2.0 — método determinístico, transparente e não científico.
+// SUKYOZ ENGINE 2.0 — método determinístico, transparente e não científico.
 const ARCHETYPES=["Origem","Expansão","Equilíbrio","Conflito","Bloqueio","Transformação","Integração"];
 const FAMILY_ORDER=["EX","EM","VO","CO","XP","PE","TR"];
 const POSITIONS=[
