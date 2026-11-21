@@ -29,7 +29,7 @@ O SUKYOZ combina três perspectivas:
 - [Arquitetura do sistema](docs/arquitetura.md)
 - [Catálogo das 49 cartas](docs/cartas.md)
 - [Métodos de leitura](docs/metodo-de-leitura.md)
-- [Motor de interpretação 2.0](docs/motor-de-interpretacao.md)
+- [Motor de interpretação 3.1](docs/motor-de-interpretacao.md)
 - [Princípios e limites de interpretação](docs/principios.md)
 
 ## Princípios de uso
@@ -43,9 +43,11 @@ O SUKYOZ combina três perspectivas:
 
 ## Estado do projeto
 
-**Edição digital 3.0 — motor simbólico integrado com 49 cartas, sete arquétipos, três estados e três modalidades de leitura.**
+**Edição digital 3.1 — catálogo de 49 cartas, mapa pessoal com carta do ano vigente, três modalidades de leitura e comparação simbólica.**
 
-Esta edição consolida a identidade conceitual, as sete famílias, os princípios e os primeiros métodos de leitura. A próxima etapa poderá desenvolver identidade visual oficial, sistema numérico, relações formais entre cartas e uma implementação digital.
+O projeto já possui uma experiência estática funcional com biblioteca, filtros, consulta por nome e nascimento, leitura contextual de 3/5/7 cartas e compatibilidade simbólica. A auditoria técnica da evolução está registrada em [Auditoria e plano de evolução](docs/auditoria-evolucao.md).
+
+O catálogo está centralizado em memória no JavaScript; ainda não é um banco de dados persistente. O site não possui backend, autenticação, armazenamento pessoal ou suíte automatizada de testes. Aprofundamento individual das 49 cartas, inteligência combinatória contextual e novas áreas de conhecimento permanecem como trabalho de evolução.
 
 ## Idioma
 
