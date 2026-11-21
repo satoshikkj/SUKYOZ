@@ -104,7 +104,17 @@ function letterValue(name){return [...normalizeText(name)].reduce((sum,ch)=>sum+
 function digitSum(value){return String(value).replace(/\D/g,"").split("").reduce((sum,n)=>sum+Number(n),0)}
 function reduceTo49(n){return ((Math.abs(n)-1)%49)+1}
 function hashText(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
-function validBirthDate(value){if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const d=new Date(value+"T12:00:00");return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===value&&d<=new Date()&&d.getFullYear()>=1900}
+function validBirthDate(value){
+ if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;
+ const [year,month,day]=value.split("-").map(Number),d=new Date(year,month-1,day);
+ if(d.getFullYear()!==year||d.getMonth()!==month-1||d.getDate()!==day||year<1900)return false;
+ const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ return d<=today;
+}
+function validPersonName(value){return (String(value||"").trim().match(/[\\p{L}]/gu)||[]).length>=2}
+function showFormMessage(element,message,type="error"){element.className="result-area form-feedback-area";element.innerHTML='<div class="form-feedback '+type+'" role="'+(type==="error"?"alert":"status")+'">'+escapeHTML(message)+'</div>'}
+function setDateLimits(){const now=new Date(),today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");["birthDate","dateA","dateB"].forEach(id=>{const field=document.getElementById(id);field.max=today;field.min="1900-01-01"})}
+setDateLimits();
 function deriveMap(name,date,question="",spreadSize=3,state=""){
  const [year,month,day]=date.split("-").map(Number),nameNorm=normalizeText(name);
  const seeds=[
